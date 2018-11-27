@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Conta {
@@ -12,11 +13,21 @@ public class Conta {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Digite o login: ");
-        this.setLogin(scanner.nextLine());
+        String login = scanner.nextLine();
+        while(Sistema.indisponibilidadeLogin(login)) {
+            System.out.println("Login ja esta em uso, escolha outro:");
+            login = scanner.nextLine();
+        }
+        this.setLogin(login);
         System.out.print("Digite a senha: ");
         this.setSenha(scanner.nextLine());
         System.out.print("Digite o nome de usuário: ");
-        this.getUser().setNome(scanner.nextLine());
+        String usuario = scanner.nextLine();
+        while (Sistema.indisponibilidadeUsuario(usuario)) {
+            System.out.println("Nome de usuario ja esta em uso, escolha outro:");
+            usuario = scanner.nextLine();
+        }
+        this.getUser().setNome(usuario);
         this.setId(id);
 
     }
@@ -47,7 +58,15 @@ public class Conta {
 
             if(escolha == 1) {
                 System.out.print("Digite a nova senha: ");
-                this.setSenha(scanner.nextLine());
+
+                try {
+                    String str = scanner.nextLine();
+                    this.setSenha(str);
+                } catch (InputMismatchException e) {
+                    scanner.nextLine();
+                    System.out.println("Entrada inválida." + e.getMessage());
+                }
+
             } else if(escolha == 2) {
                 System.out.print("Digite o novo login: ");
                 this.setLogin(scanner.nextLine());
@@ -65,10 +84,6 @@ public class Conta {
 
     public Usuario getUser() {
         return user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
     }
 
     public String getLogin() {

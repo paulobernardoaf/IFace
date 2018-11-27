@@ -18,6 +18,10 @@ public class Comunidade {
     public void removerMembro(Usuario usuario) {
 
         if(this.admin == usuario) {
+            if(this.getQuantidadeDeMembros() == 1) {
+                Sistema.apagarComunidade(this);
+                return;
+            }
             this.setAdmin(membros.get(this.getQuantidadeDeMembros()-1));
         }
 
@@ -55,14 +59,6 @@ public class Comunidade {
         return membros;
     }
 
-    public void setMembros(ArrayList<Usuario> membros) {
-        this.membros = membros;
-    }
-
-    public Usuario getAdmin() {
-        return admin;
-    }
-
     public void setAdmin(Usuario admin) {
         this.admin = admin;
     }
@@ -79,20 +75,8 @@ public class Comunidade {
         return quantidadeDeMembros;
     }
 
-    public void setQuantidadeDeMembros(int quantidadeDeMembros) {
-        this.quantidadeDeMembros = quantidadeDeMembros;
-    }
-
     public Chat getChatComunidade() {
         return chatComunidade;
-    }
-
-    public void setChatComunidade(Chat chatComunidade) {
-        this.chatComunidade = chatComunidade;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public void setDescricao(String descricao) {

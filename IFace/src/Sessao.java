@@ -8,7 +8,7 @@ public class Sessao {
         this.conta = conta;
     }
 
-    public void start() {
+    public Usuario start() {
         System.out.println("Bem vindo " + this.conta.getUser().getNome());
 
         while(true) {
@@ -16,6 +16,7 @@ public class Sessao {
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("Escolha sua operação:\n" +
+                    "(0) - Deletar sua conta\n" +
                     "(1)  - Editar perfil\n" +
                     "(2)  - Adicionar Amigo\n" +
                     "(3)  - Visualizar solicitações de amizades pendentes [" + this.conta.getUser().getSolicitacoes().size() + "]\n" +
@@ -36,7 +37,9 @@ public class Sessao {
             int escolha = scanner.nextInt();
             scanner.nextLine();
 
-            if(escolha == 1) {
+            if(escolha == 0) {
+                return this.conta.getUser();
+            } else if(escolha == 1) {
                 this.conta.editarConta();
             } else if(escolha == 2) {
                 System.out.print("Digite o nome de usuário:");
@@ -92,6 +95,9 @@ public class Sessao {
             } else if(escolha == 12) {
                 this.conta.detalhesDaConta();
             } else if(escolha == 13) {
+
+                this.conta.getUser().visualizarComunidadesAdmins();
+
                 System.out.print("Digite o nome da sua comunidade que deseja gerenciar:");
                 Comunidade comunidade = Sistema.getComunidadePeloNome(scanner.nextLine());
                 if(comunidade != null) {
@@ -110,7 +116,7 @@ public class Sessao {
                 this.conta.getUser().enviarMensagemParaComunidade();
             }
             else {
-                return;
+                return null;
             }
 
         }

@@ -92,6 +92,7 @@ public class Usuario {
                     "(2) - Listar membros\n" +
                     "(3) - Alterar nome da Comunidade\n" +
                     "(4) - Alterar descrição da Comunidade\n" +
+                    "(5) - Deletar comunidade\n" +
                     "(outro) - Sair");
 
             int escolha = scanner.nextInt();
@@ -116,6 +117,13 @@ public class Usuario {
                 System.out.println("Digite a nova descrição da comunidade: ");
                 comunidade.setDescricao(scanner.nextLine());
                 System.out.println("Alterações feitas com sucesso!");
+            } else if(escolha == 5) {
+                System.out.println("Tem certeza que deseja deletar sua comunidade?\t(1) - Sim\t(2) - Não");
+                int opcao = scanner.nextInt();
+                if(opcao == 1) {
+                    Sistema.apagarComunidade(comunidade);
+                    break;
+                }
             }
             else {
                 break;
@@ -150,6 +158,13 @@ public class Usuario {
         }
     }
 
+    public void visualizarComunidadesAdmins() {
+        System.out.println("Suas comunidades:");
+        for(Comunidade comunidade : this.getAdminComunidades()){
+            System.out.println("\t" + comunidade.getNomeDaComunidade());
+        }
+    }
+
     public void detalhesUsuario() {
         System.out.println("\tNome: " + this.getNome());
         System.out.println("\tAmigos:");
@@ -159,7 +174,11 @@ public class Usuario {
     }
 
     public void mandarSolicitacao(Usuario amigo) {
-        if(amigo != this) {
+        if(this.getSolicitacoes().contains(amigo)) {
+            this.aceitarSolicitção(amigo.getNome());
+            return;
+        }
+        if(amigo != this && (!amigo.getSolicitacoes().contains(this))) {
             amigo.getSolicitacoes().add(this);
         }
     }
@@ -281,39 +300,20 @@ public class Usuario {
         return amigos;
     }
 
-    public void setAmigos(ArrayList<Usuario> amigos) {
-        this.amigos = amigos;
-    }
-
     public ArrayList<Usuario> getSolicitacoes() {
         return solicitacoes;
-    }
-
-    public void setSolicitacoes(ArrayList<Usuario> solicitacoes) {
-        this.solicitacoes = solicitacoes;
     }
 
     public ArrayList<Chat> getChats() {
         return chats;
     }
 
-    public void setChats(ArrayList<Chat> chats) {
-        this.chats = chats;
-    }
-
     public ArrayList<Comunidade> getComunidades() {
         return comunidades;
-    }
-
-    public void setComunidades(ArrayList<Comunidade> comunidades) {
-        this.comunidades = comunidades;
     }
 
     public ArrayList<Comunidade> getAdminComunidades() {
         return adminComunidades;
     }
 
-    public void setAdminComunidades(ArrayList<Comunidade> adminComunidades) {
-        this.adminComunidades = adminComunidades;
-    }
 }

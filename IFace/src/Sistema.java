@@ -24,6 +24,30 @@ public class Sistema {
         }
     }
 
+    public static boolean indisponibilidadeLogin(String login) {
+
+        for (Conta conta : Sistema.getContas()) {
+            if(conta.getLogin().equals(login)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    public static boolean indisponibilidadeUsuario(String usuario) {
+
+        for (Conta conta : Sistema.getContas()) {
+            if(conta.getUser().getNome().equals(usuario)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
     public void adicionarConta() {
         int id = Integer.parseInt(Sistema.getTotalDeContas());
         Conta novaConta = new Conta(id);
@@ -42,14 +66,25 @@ public class Sistema {
         System.out.println("Conta não existente no sistema.");
     }
 
-    public void removerConta(Usuario usuario) {
+    public static void apagarComunidade(Comunidade comunidade) {
 
-        Iterator<Comunidade> iterator = this.comunidades.iterator();
+        for (Conta conta : Sistema.getContas()) {
+            conta.getUser().getAdminComunidades().remove(comunidade);
+            conta.getUser().getComunidades().remove(comunidade);
+        }
+
+        Sistema.getComunidades().remove(comunidade);
+
+    }
+
+    public static void removerConta(Usuario usuario) {
+
+        Iterator<Comunidade> iterator = Sistema.getComunidades().iterator();
         while(iterator.hasNext()) {
             iterator.next().removerMembro(usuario);
         }
 
-        Iterator<Conta> iteratorConta = this.contas.iterator();
+        Iterator<Conta> iteratorConta = Sistema.getContas().iterator();
         while(iteratorConta.hasNext()) {
             Conta iter = iteratorConta.next();
             iter.getUser().removerAmigo(usuario);
@@ -57,7 +92,7 @@ public class Sistema {
             iter.getUser().removerChats(usuario);
         }
 
-        iteratorConta = this.contas.iterator();
+        iteratorConta = Sistema.getContas().iterator();
         while(iteratorConta.hasNext()) {
             Conta iterUsuario = iteratorConta.next();
             if(iterUsuario.getUser() == usuario) {
@@ -98,7 +133,7 @@ public class Sistema {
         }
     }
 
-    public void iniciarSessao() {
+    public Usuario iniciarSessao() {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -111,13 +146,12 @@ public class Sistema {
             if(conta.getLogin().equals(login) && conta.getSenha().equals(senha)) {
                 System.out.println("Login realizado com sucesso!");
                 Sessao sessao = new Sessao(conta);
-                sessao.start();
-                return;
+                return sessao.start();
             }
         }
 
         System.out.println("Login ou senha incorretos!");
-
+        return null;
     }
 
     public static ArrayList<Conta> getContas() {
@@ -132,7 +166,4 @@ public class Sistema {
         return comunidades;
     }
 
-    public static void setComunidades(ArrayList<Comunidade> comunidades) {
-        Sistema.comunidades = comunidades;
-    }
 }

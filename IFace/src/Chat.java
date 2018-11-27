@@ -30,15 +30,8 @@ public class Chat {
         return usuarios;
     }
 
-    public void setUsuarios(ArrayList<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-
     public ArrayList<String> getMensagems() {
         return mensagems;
     }
 
-    public void setMensagems(ArrayList<String> mensagems) {
-        this.mensagems = mensagems;
-    }
 }

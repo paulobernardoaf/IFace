@@ -30,9 +30,12 @@ public class Main {
             } else if(escolha == 4) {
                 System.out.print("Digite o nome de usuário a ser excluído: ");
                 Usuario usuario = Sistema.getUsuarioPeloNome(scanner.nextLine());
-                sistema.removerConta(usuario);
+                Sistema.removerConta(usuario);
             } else if(escolha == 5) {
-                sistema.iniciarSessao();
+               Usuario user = sistema.iniciarSessao();
+               if(user != null) {
+                   Sistema.removerConta(user);
+               }
             } else if(escolha == 6) {
                 System.out.println("Comunidades: ");
                 Sistema.listarTodasComunidades();
